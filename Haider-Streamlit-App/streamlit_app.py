@@ -7,13 +7,12 @@ from datetime import datetime
 def run_clock_page():
     st.title('Clock')
     clock = st.empty()
-    while True:
-        time = datetime.now().strftime("%H:%M:%S")
-        clock.info(f'**Current time: ** {time}')
-        if time == '16:09:50':
-            clock.empty()
-            st.warning('Alarm!!')
-            break
+    # Update every second instead of using an infinite loop
+    time = datetime.now().strftime("%H:%M:%S")
+    clock.info(f'**Current time: ** {time}')
+    if time == '16:09:50':
+        clock.empty()
+        st.warning('Alarm!!')
 
 # Main function to handle page selection
 def main():
@@ -33,13 +32,12 @@ def main():
 # Main page
 def main_page():
     st.title('Main Page')
+    # Snowflake query code should be here
+    conn = st.connection("snowflake")
+    df = conn.query("SELECT * FROM mytable;", ttl="10m")
 
-
-conn = st.connection("snowflake")
-df = conn.query("SELECT * FROM mytable;", ttl="10m")
-
-for row in df.itertuples():
-    st.write(f"{row.NAME} has a :{row.PET}:")
+    for row in df.itertuples():
+        st.write(f"{row.NAME} has a :{row.PET}:")
 
 # Run Page 1
 def run_page_1():
