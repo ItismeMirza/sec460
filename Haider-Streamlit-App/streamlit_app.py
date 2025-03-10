@@ -34,6 +34,13 @@ def main():
 def main_page():
     st.title('Main Page')
 
+
+conn = st.connection("snowflake")
+df = conn.query("SELECT * FROM mytable;", ttl="10m")
+
+for row in df.itertuples():
+    st.write(f"{row.NAME} has a :{row.PET}:")
+
 # Run Page 1
 def run_page_1():
     func_page_1()
